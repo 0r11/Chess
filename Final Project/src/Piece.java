@@ -22,6 +22,13 @@ public class Piece {
         thisPiece = p; // {bishop, rook, queen, king, pawn, knight}
         color = isWhite;
     }
+    
+    public int getIndex(){
+        return thisPiece;
+    }
+    public boolean getColor() {
+        return color;
+    }
 
     public ArrayList<ArrayList<Integer>> rookCanMove(){
         //TODO Make function
