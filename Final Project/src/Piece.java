@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Piece {
     private int x;
-    private int y5;
+    private int y;
     private int score;
     private int thisPiece;
     private boolean color;
