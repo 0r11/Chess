@@ -5,11 +5,35 @@ public class Board {
     }
 
     public void display(){
-        StdOut.print(board.toString());
-
+        for(int x = 0; x < 8; x ++){
+            for(int y = 0; y < 8; y ++){
+                if(board[y][x] != null){
+                    System.out.print(board[y][x].getPiece());
+                } else { System.out.print(" ");}
+            }
+            System.out.println();
+        }
     }
 
     public Piece getPiece(int x, int y){
         return board[x][y];
+    }
+
+    public void initialize(){ // {Rook, bishop, queen, knight, pawn, king}
+        //public Piece(int piece, int x, int y, boolean isWhite, Board board)
+
+        //White
+        board[0][0] = new Piece(0, 0, 0, true, this); //Going left to right  //Rook
+        board[1][0] = new Piece(3, 1, 0, true, this); // Knight
+        board[2][0] = new Piece(1, 2, 0, true, this); // Bishop
+        board[3][0] = new Piece(2, 3, 0, true, this); // Queen
+        board[4][0] = new Piece(5, 4, 0, true, this); // King
+        board[5][0] = new Piece(1, 5, 0, true, this); // Bishop
+        board[6][0] = new Piece(3, 6, 0, true, this); // Knight
+        board[7][0] = new Piece(0, 7, 0, true, this); //Rook
+        for(int i = 0; i < 8; i ++){
+            board[i][1] = new Piece(4, i, 1, true, this); //Pawns
+        }
+
     }
 }
