@@ -28,6 +28,10 @@ public class Piece {
         return isWhite;
     }
 
+    public int getPiece(){
+        return thisPiece;
+    }
+
 
     private ArrayList<Integer[]> rookCanMove(){
         ArrayList<Integer[]> result = new ArrayList<>();
