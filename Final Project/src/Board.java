@@ -5,10 +5,10 @@ public class Board {
     }
 
     public void display(){
-        for(int x = 0; x < 8; x ++){
-            for(int y = 0; y < 8; y ++){
-                if(board[y][x] != null){
-                    System.out.print(board[y][x].getPiece());
+        for(int y = 0; y < 8; y ++){
+            for(int x = 0; x < 8; x ++){
+                if(board[x][y] != null){
+                    System.out.print(board[x][y].getPiece());
                 } else { System.out.print(" ");}
             }
             System.out.println();
@@ -17,6 +17,10 @@ public class Board {
 
     public Piece getPiece(int x, int y){
         return board[x][y];
+    }
+
+    public void setPiece( int x, int y, Piece p){
+        board[x][y] = p;
     }
 
     public void initialize(){ // {Rook, bishop, queen, knight, pawn, king}
@@ -35,5 +39,6 @@ public class Board {
             board[i][1] = new Piece(4, i, 1, true, this); //Pawns
         }
 
+        //TODO Initialize black pieces
     }
 }

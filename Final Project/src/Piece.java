@@ -34,6 +34,7 @@ public class Piece {
 
 
     private ArrayList<Integer[]> rookCanMove(){
+        //TODO Test this
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{0,1},{0,-1},{1,0},{-1,0}}; //List of directions to go in
         for(int[] offset: directions) {
@@ -58,6 +59,7 @@ public class Piece {
 
 
     private ArrayList<Integer[]> bishopCanMove(){
+        //TODO Test
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{1,1},{-1,-1},{1,-1},{-1,1}}; //List of directions to go in
         for(int[] offset: directions) {
@@ -97,9 +99,10 @@ public class Piece {
     public ArrayList<Integer[]> pieceCanMove(){
         if(thisPiece == 0){
             //Rook
-            bishopCanMove();
+            return rookCanMove();
         } else if( thisPiece == 1){//TODO do rest of functions
             //Bishop
+            return bishopCanMove();
         } else if(thisPiece == 2){
             //Queen
             ArrayList<Integer[]> result = rookCanMove();
@@ -116,5 +119,14 @@ public class Piece {
             //King
         }
         return null;
+    }
+
+    public void movePiece(int x, int y){
+        //TODO check if you can put piece there
+        //TODO special moves
+        board.setPiece( x, y,this);
+        board.setPiece( this.x, this.y,null);
+        this.x = x;
+        this.y = y;
     }
 }
