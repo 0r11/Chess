@@ -1,7 +1,15 @@
 public class Board {
+    private Piece[][] board;
     public Board(){
-        Piece[][] board = new Piece[8][8];
+        board = new Piece[8][8];
+    }
+
+    public void display(){
         StdOut.print(board.toString());
-//        board[0][1] = new Piece();
+
+    }
+
+    public Piece getPiece(int x, int y){
+        return board[x][y];
     }
 }
