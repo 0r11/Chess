@@ -15,6 +15,7 @@ public class Piece {
     private int thisPiece;
     private final boolean isWhite;
     private Board board;
+    private boolean pieceHasMoved = false;
 
     public Piece(int piece, int x, int y, boolean isWhite, Board board){
         this.x = x;
@@ -23,6 +24,8 @@ public class Piece {
         this.isWhite = isWhite;
         this.board = board;
     }
+
+    public boolean hasMoved(){return pieceHasMoved;}
 
     public boolean isWhite(){
         return isWhite;
@@ -34,7 +37,6 @@ public class Piece {
 
 
     private ArrayList<Integer[]> rookCanMove(){
-        //TODO Test this
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{0,1},{0,-1},{1,0},{-1,0}}; //List of directions to go in
         for(int[] offset: directions) {
@@ -59,7 +61,6 @@ public class Piece {
 
 
     private ArrayList<Integer[]> bishopCanMove(){
-        //TODO Test
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{1,1},{-1,-1},{1,-1},{-1,1}}; //List of directions to go in
         for(int[] offset: directions) {
@@ -82,18 +83,96 @@ public class Piece {
     }
 
     public ArrayList<Integer[]> knightCanMove(){
-        //TODO Make function
-        return null;
+        ArrayList<Integer[]> result = new ArrayList<>();
+        int[][] directions = {{1,2},{1 , -2},{-1,2},{-1, -2},{2,1},{2 , -1},{-2,1},{-2, -1}}; //List of directions to go in
+        for(int[] offset: directions) {
+            Integer[] coords = {x + offset[0], y + offset[1]};
+            if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
+                Piece p = board.getPiece(coords[0],coords[1]);
+                if(p == null){
+                    result.add(coords);
+                } else {
+                    if(p.isWhite() != isWhite){
+                        result.add(coords);
+                    }
+                }
+            }
+
+        }
+        return result;
     }
 
     private ArrayList<Integer[]> pawnCanMove(){
-        //TODO Make function
-        return null;
+        ArrayList<Integer[]> result = new ArrayList<>();
+        if(isWhite){ //If white go forward
+            if(board.getPiece(x,y + 1) == null){
+                Integer[] t = {x, y + 1};
+                result.add(t);
+                if(!pieceHasMoved) { //Can move double if hasn't moved
+                    if (board.getPiece(x, y + 2) == null) {
+                        Integer[] t2 = {x, y + 2};
+                        result.add(t2);
+                    }
+                }
+            }
+            if(board.getPiece(x - 1,y + 1) != null){ //Attack opponent diagonally
+                if(!board.getPiece(x - 1,y + 1).isWhite()) {
+                    Integer[] t = {x - 1, y + 1};
+                    result.add(t);
+                }
+            }
+            if(board.getPiece(x + 1,y + 1) != null){
+                if(!board.getPiece(x + 1,y + 1).isWhite()) {
+                    Integer[] t = {x + 1, y + 1};
+                    result.add(t);
+                }
+            }
+        } else { //If black go back
+            if(board.getPiece(x,y - 1) == null){
+                Integer[] t = {x, y - 1};
+                result.add(t);
+                if(!pieceHasMoved) {
+                    if (board.getPiece(x, y - 2) == null) {
+                        Integer[] t2 = {x, y - 2};
+                        result.add(t2);
+                    }
+                }
+            }
+            if(board.getPiece(x - 1,y - 1) != null){
+                if(board.getPiece(x - 1,y - 1).isWhite()) {
+                    Integer[] t = {x - 1, y - 1};
+                    result.add(t);
+                }
+            }
+            if(board.getPiece(x + 1,y - 1) != null){
+                if(board.getPiece(x + 1,y - 1).isWhite()) {
+                    Integer[] t = {x + 1, y - 1};
+                    result.add(t);
+                }
+            }
+        }
+        pieceHasMoved = true;
+        return result;
     }
 
     private ArrayList<Integer[]> kingCanMove(){
-        //TODO Make function
-        return null;
+        ArrayList<Integer[]> result = new ArrayList<>();
+        int[][] directions = {{1,1},{1 , -1},{-1,1},{-1,-1},{0,1},{0,-1},{-1,0},{1, 0}}; //List of directions to go in
+        for(int[] offset: directions) {
+            Integer[] coords = {x + offset[0], y + offset[1]};
+            if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
+                Piece p = board.getPiece(coords[0],coords[1]);
+                if(p == null){
+                    result.add(coords);
+                } else {
+                    if(p.isWhite() != isWhite){
+                        result.add(coords);
+                    }
+                }
+            }
+
+        }
+        return result;
     }
 
 
@@ -101,6 +180,7 @@ public class Piece {
     public ArrayList<Integer[]> pieceCanMove(){
         if(thisPiece == 0){
             //Rook
+            pieceHasMoved = true;
             return rookCanMove();
         } else if( thisPiece == 1){//TODO do rest of functions
             //Bishop
@@ -114,11 +194,13 @@ public class Piece {
             }
             return result;
         } else if(thisPiece == 3){
-            //Knight
+            return knightCanMove();
         } else if(thisPiece == 4){
-            //Pawn
+            return pawnCanMove();
         } else if(thisPiece == 5){
-            //King
+            // check castle
+            pieceHasMoved = true;
+            return kingCanMove();
         }
         return null;
     }
