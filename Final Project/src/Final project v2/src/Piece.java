@@ -39,7 +39,7 @@ public class Piece {
         int[][] directions = {{0,1},{0,-1},{1,0},{-1,0}}; //List of directions to go in
         for(int[] offset: directions) {
             for(int j = 1; j < 8; j ++){
-                Integer[] coords = {x + offset[0] * j, y + offset[1] * j};
+                Integer[] coords = {x + offset[0], y + offset[1]};
                 if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
                     Piece p = board.getPiece(coords[0],coords[1]);
                     if(p == null){
@@ -64,7 +64,7 @@ public class Piece {
         int[][] directions = {{1,1},{-1,-1},{1,-1},{-1,1}}; //List of directions to go in
         for(int[] offset: directions) {
             for(int j = 1; j < 8; j ++){
-                Integer[] coords = {x + offset[0] * j, y + offset[1] * j};
+                Integer[] coords = {x + offset[0], y + offset[1]};
                 if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
                     Piece p = board.getPiece(coords[0],coords[1]);
                     if(p == null){
@@ -95,8 +95,6 @@ public class Piece {
         //TODO Make function
         return null;
     }
-
-
 
     public ArrayList<Integer[]> pieceCanMove(){
         if(thisPiece == 0){
@@ -130,10 +128,5 @@ public class Piece {
         board.setPiece( this.x, this.y,null);
         this.x = x;
         this.y = y;
-    }
-
-    //TODO: Implement
-    public boolean isLegal(int x1, int y1){
-        return true;
     }
 }
