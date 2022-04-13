@@ -103,6 +103,7 @@ public class Piece {
     }
 
     private ArrayList<Integer[]> pawnCanMove(){
+        //TODO Test
         ArrayList<Integer[]> result = new ArrayList<>();
         if(isWhite){ //If white go forward
             if(board.getPiece(x,y + 1) == null){
@@ -172,6 +173,8 @@ public class Piece {
             }
 
         }
+        //TODO Castling
+        pieceHasMoved = true;
         return result;
     }
 
@@ -182,7 +185,7 @@ public class Piece {
             //Rook
             pieceHasMoved = true;
             return rookCanMove();
-        } else if( thisPiece == 1){//TODO do rest of functions
+        } else if( thisPiece == 1){
             //Bishop
             return bishopCanMove();
         } else if(thisPiece == 2){
@@ -194,27 +197,34 @@ public class Piece {
             }
             return result;
         } else if(thisPiece == 3){
+            //Knight
             return knightCanMove();
         } else if(thisPiece == 4){
+            //Pawn
             return pawnCanMove();
         } else if(thisPiece == 5){
-            // check castle
-            pieceHasMoved = true;
+            //King
             return kingCanMove();
         }
         return null;
     }
 
-    public void movePiece(int x, int y){
-        //TODO check if you can put piece there
-        //TODO special moves
-        board.setPiece( x, y,this);
-        board.setPiece( this.x, this.y,null);
-        this.x = x;
-        this.y = y;
+    public boolean special(int x1, int y1) {
+        return false;
     }
 
-    //TODO: Test
+    public void movePiece(int x1, int y1){
+        //TODO special moves // Pawn promotion, Check, Castle, En Passant,
+        if(isLegal(x1,y1)){
+            board.setPiece( x1, y1,this);
+            board.setPiece( x, y,null);
+            x = x1;
+            y = y1;
+        } else if(special(x1,y1)){
+            System.out.println(x + " " + y + "to" + x1 + y1 + "is not a legal move");
+        }
+    }
+
     public boolean isLegal(int x1, int y1){
         for(Integer[] moves: pieceCanMove()){
             if( moves[0] == x1 && moves [1] == y1){
