@@ -4,7 +4,6 @@ public class Main {
         Board board = new Board();
         board.initialize();
         board.display();
-        System.out.println("--------------");
         board.getPiece(0,1).movePiece(0,2);
         board.display();
 
