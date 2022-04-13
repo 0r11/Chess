@@ -214,8 +214,13 @@ public class Piece {
         this.y = y;
     }
 
-    //TODO: Implement
+    //TODO: Test
     public boolean isLegal(int x1, int y1){
-        return true;
+        for(Integer[] moves: pieceCanMove()){
+            if( moves[0] == x1 && moves [1] == y1){
+                return true;
+            }
+        }
+        return false;
     }
 }
