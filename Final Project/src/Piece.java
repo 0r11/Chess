@@ -108,26 +108,31 @@ public class Piece {
         //TODO Test
         ArrayList<Integer[]> result = new ArrayList<>();
         if(isWhite){ //If white go forward
-            if(board.getPiece(x,y + 1) == null){
+            if (board.getPiece(x, y + 1) == null) {
                 Integer[] t = {x, y + 1};
                 result.add(t);
-                if(!pieceHasMoved) { //Can move double if hasn't moved
+                if (!pieceHasMoved) { //Can move double if hasn't moved
                     if (board.getPiece(x, y + 2) == null) {
                         Integer[] t2 = {x, y + 2};
                         result.add(t2);
                     }
                 }
             }
-            if(board.getPiece(x - 1,y + 1) != null){ //Attack opponent diagonally
-                if(!board.getPiece(x - 1,y + 1).isWhite()) {
-                    Integer[] t = {x - 1, y + 1};
-                    result.add(t);
+
+            if(x != 0) {
+                if (board.getPiece(x - 1, y + 1) != null) { //Attack opponent diagonally
+                    if (!board.getPiece(x - 1, y + 1).isWhite()) {
+                        Integer[] t = {x - 1, y + 1};
+                        result.add(t);
+                    }
                 }
             }
-            if(board.getPiece(x + 1,y + 1) != null){
-                if(!board.getPiece(x + 1,y + 1).isWhite()) {
-                    Integer[] t = {x + 1, y + 1};
-                    result.add(t);
+            if(x != 7) {
+                if (board.getPiece(x + 1, y + 1) != null) {
+                    if (!board.getPiece(x + 1, y + 1).isWhite()) {
+                        Integer[] t = {x + 1, y + 1};
+                        result.add(t);
+                    }
                 }
             }
         } else { //If black go back
@@ -141,16 +146,20 @@ public class Piece {
                     }
                 }
             }
-            if(board.getPiece(x - 1,y - 1) != null){
-                if(board.getPiece(x - 1,y - 1).isWhite()) {
-                    Integer[] t = {x - 1, y - 1};
-                    result.add(t);
+            if( x != 0) {
+                if (board.getPiece(x - 1, y - 1) != null) {
+                    if (board.getPiece(x - 1, y - 1).isWhite()) {
+                        Integer[] t = {x - 1, y - 1};
+                        result.add(t);
+                    }
                 }
             }
-            if(board.getPiece(x + 1,y - 1) != null){
-                if(board.getPiece(x + 1,y - 1).isWhite()) {
-                    Integer[] t = {x + 1, y - 1};
-                    result.add(t);
+            if( x != 7) {
+                if (board.getPiece(x + 1, y - 1) != null) {
+                    if (board.getPiece(x + 1, y - 1).isWhite()) {
+                        Integer[] t = {x + 1, y - 1};
+                        result.add(t);
+                    }
                 }
             }
         }
@@ -231,9 +240,10 @@ public class Piece {
         }
     }
 
-    public boolean isLegal(int x1, int y1){
+    public boolean isLegal(int x1, int y1, boolean isWhite){
+        if(this.isWhite != isWhite){ return false;}
         for(Integer[] moves: pieceCanMove()){
-            if( moves[0] == x1 && moves [1] == y1){
+            if( moves[0] == x1 && moves[1] == y1){
                 return true;
             }
         }
