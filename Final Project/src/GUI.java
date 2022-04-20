@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.ArrayList;
 
 public class GUI {
 
@@ -13,6 +14,13 @@ public class GUI {
         StdDraw.setXscale(-1, 7);
         StdDraw.setYscale(-1, 7);
 
+        String[] whiteimages;
+        whiteimages = new String[]{"whiteRook.png", "whiteBishop.png"};
+        String[] blackimages;
+        blackimages = new String[]{"blackRook.png", "blackBishop.png"};
+
+
+
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if ((x + y) % 2 == 0) {
@@ -24,7 +32,12 @@ public class GUI {
                 }
 
                 if (board.getPiece(x,y) != null){
-                    StdDraw.text(x,y, String.valueOf(board.getPiece(x,y).getPiece()));
+                    if(board.getPiece(x,y).isWhite()){
+                        StdDraw.picture(x,y, whiteimages[board.getPiece(x,y).getPiece()]);
+                    } else {
+                        StdDraw.picture(x,y, blackimages[board.getPiece(x,y).getPiece()]);
+                    }
+//                    StdDraw.text(x,y, String.valueOf(board.getPiece(x,y).getPiece()));
                 }
 
 
@@ -66,5 +79,3 @@ public class GUI {
 //            return board;
 //        }
 }
-
-
