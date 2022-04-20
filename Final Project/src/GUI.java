@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.ArrayList;
 
 public class GUI {
 
@@ -14,12 +13,13 @@ public class GUI {
         StdDraw.setXscale(-1, 7);
         StdDraw.setYscale(-1, 7);
 
-        String[] whiteimages;
-        whiteimages = new String[]{"whiteRook.png", "whiteBishop.png"};
-        String[] blackimages;
-        blackimages = new String[]{"blackRook.png", "blackBishop.png"};
 
-
+        String[] whiteImages;
+        whiteImages = new String[]{"whiteRook copy.png", "whiteBishop copy.png", "whiteQueen copy.png",
+                "whiteHorse copy.png", "WhitePawn copy.png", "WhiteKing copy.png"};
+        String[] blackImages;
+        blackImages = new String[]{"blackRook copy.png", "blackBishop copy.png", "blackQueen copy.png",
+                "blackHorse copy.png", "blackPawn copy.png", "blackKing copy.png"};
 
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -33,49 +33,54 @@ public class GUI {
 
                 if (board.getPiece(x,y) != null){
                     if(board.getPiece(x,y).isWhite()){
-                        StdDraw.picture(x,y, whiteimages[board.getPiece(x,y).getPiece()]);
+                        StdDraw.picture(x-.5,y-.5, whiteImages[board.getPiece(x,y).getPiece()]);
                     } else {
-                        StdDraw.picture(x,y, blackimages[board.getPiece(x,y).getPiece()]);
+                        StdDraw.picture(x-.5, y-.5, blackImages[board.getPiece(x, y).getPiece()]);
                     }
-//                    StdDraw.text(x,y, String.valueOf(board.getPiece(x,y).getPiece()));
                 }
-
-
             }
         }
     }
 
 
 
-//    public static Board[][] handleMouseClick(Piece[][] board, boolean isWhite, Piece piece) {
-//        // TODO You have to write this
-//        while (!StdDraw.isMousePressed()) {
-//            // Wait for mouse press
-//        }
-//        double x = Math.round(StdDraw.mouseX());
-//        double y = Math.round(StdDraw.mouseY());
-//        while (StdDraw.isMousePressed()) {
-//            // Wait for mouse release
-//        }
-//        int a = (int) x;
-//        int b = (int) y;
-//
-//        if (board.isLegal) {
-//            // TODO (if place clicked is legal move, move piece to that spot)
-//        } else {
-//            handleMouseClick(board, isWhite, piece);
-//        }
-//
-//        return board;
-//    }
-//
-//        public static Piece[][] placePiece (int x, int y, Piece[][] board, boolean isWhite, Piece piece){
-//            if (isWhite) {
-//                board.setPiece(x, y, piece);
-//            } else {
-//                board.setPiece(x, y, piece);
-//            }
-//
-//            return board;
-//        }
+    public void handleMouseClick(boolean isWhite, Board board) {
+        // TODO You have to write this
+        while (!StdDraw.isMousePressed()) {
+            // Wait for mouse press
+        }
+        double x = Math.round(StdDraw.mouseX());
+        double y = Math.round(StdDraw.mouseY());
+
+        while (StdDraw.isMousePressed()) {
+            // Wait for mouse release
+        }
+
+        int a = (int) x;
+        int b = (int) y;
+
+        if (board.getPiece(a,b) != null) {
+
+            while (!StdDraw.isMousePressed()) {
+                // Wait for mouse press
+            }
+            double x1 = Math.round(StdDraw.mouseX());
+            double y1 = Math.round(StdDraw.mouseY());
+
+            while (StdDraw.isMousePressed()) {
+                // Wait for mouse release
+            }
+
+            int a1 = (int) x1;
+            int b1 = (int) y1;
+
+            if (board.getPiece(a,b).isLegal(a1,b1)) {
+                board.getPiece(a,b).movePiece(a1,b1);
+            } else {
+                this.handleMouseClick(isWhite, board);
+            }
+        }
+    }
 }
+
+
