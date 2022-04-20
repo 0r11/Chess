@@ -35,7 +35,7 @@ public class Piece {
         return thisPiece;
     }
 
-
+    /**Checks to see if the rook can move to a given square (Castling not yet implemented)*/
     private ArrayList<Integer[]> rookCanMove(){
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{0,1},{0,-1},{1,0},{-1,0}}; //List of directions to go in
@@ -59,7 +59,7 @@ public class Piece {
     }
 
 
-
+    /**Checks to see if the bishop can move to a given square */
     private ArrayList<Integer[]> bishopCanMove(){
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{1,1},{-1,-1},{1,-1},{-1,1}}; //List of directions to go in
@@ -82,6 +82,7 @@ public class Piece {
         return result;
     }
 
+    /**Checks to see if the knight can move to a given square */
     public ArrayList<Integer[]> knightCanMove(){
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{1,2},{1 , -2},{-1,2},{-1, -2},{2,1},{2 , -1},{-2,1},{-2, -1}}; //List of directions to go in
@@ -102,6 +103,7 @@ public class Piece {
         return result;
     }
 
+    /**Checks to see if the pawn can move to a given square (en passant not yet included)*/
     private ArrayList<Integer[]> pawnCanMove(){
         //TODO Test
         ArrayList<Integer[]> result = new ArrayList<>();
@@ -156,6 +158,7 @@ public class Piece {
         return result;
     }
 
+    /**Checks to see if the knight can move to a given square (Castling not yet implemented) */
     private ArrayList<Integer[]> kingCanMove(){
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{1,1},{1 , -1},{-1,1},{-1,-1},{0,1},{0,-1},{-1,0},{1, 0}}; //List of directions to go in
@@ -192,9 +195,7 @@ public class Piece {
             //Queen
             ArrayList<Integer[]> result = rookCanMove();
             ArrayList<Integer[]> result2 = bishopCanMove();
-            for(int i = 0; i < result2.size(); i ++){
-                result.add(result2.get(i));
-            }
+            result.addAll(result2);
             return result;
         } else if(thisPiece == 3){
             //Knight
@@ -213,6 +214,7 @@ public class Piece {
         return false;
     }
 
+    /**Moves the piece (if it can move to that square)*/
     public void movePiece(int x1, int y1){
         //TODO special moves // Pawn promotion, Check, Castle, En Passant,
         if(isLegal(x1,y1)){
@@ -220,6 +222,10 @@ public class Piece {
             board.setPiece( x, y,null);
             x = x1;
             y = y1;
+            //Pawn promotion
+            if((isWhite && y == 7) || (!isWhite && y == 0)){ //TODO: Test
+                thisPiece = 2;
+            }
         } else if(special(x1,y1)){
             System.out.println(x + " " + y + "to" + x1 + y1 + "is not a legal move");
         }
