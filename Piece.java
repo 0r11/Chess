@@ -163,7 +163,6 @@ public class Piece {
                 }
             }
         }
-        pieceHasMoved = true;
         return result;
     }
 
@@ -186,7 +185,6 @@ public class Piece {
 
         }
         //TODO Castling
-        pieceHasMoved = true;
         return result;
     }
 
@@ -195,7 +193,6 @@ public class Piece {
     public ArrayList<Integer[]> pieceCanMove(){
         if(thisPiece == 0){
             //Rook
-            pieceHasMoved = true;
             return rookCanMove();
         } else if( thisPiece == 1){
             //Bishop
@@ -226,13 +223,14 @@ public class Piece {
     /**Moves the piece (if it can move to that square)*/
     public void movePiece(int x1, int y1){
         //TODO special moves // Pawn promotion, Check, Castle, En Passant,
-        if(isLegal(x1,y1)){
+        if(isLegal(x1,y1, isWhite)){
             board.setPiece( x1, y1,this);
             board.setPiece( x, y,null);
             x = x1;
             y = y1;
+            pieceHasMoved = true;
             //Pawn promotion
-            if((isWhite && y == 7) || (!isWhite && y == 0)){ //TODO: Test
+            if(thisPiece == 4 && (isWhite && y == 7) || (!isWhite && y == 0)){ //TODO: Test
                 thisPiece = 2;
             }
         } else if(special(x1,y1)){
