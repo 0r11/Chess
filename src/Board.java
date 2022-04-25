@@ -9,20 +9,13 @@ public class Board {
     }
 
     public Piece getPiece(int x, int y){
+        if(x < 0 || x > 7 || y < 0 || y > 7){return null;}
         return board[x][y];
     }
 
     public void setPiece( int x, int y, Piece p){
         board[x][y] = p;
     }
-
-//    private boolean isLegal(int x,int y, int x1, int y1){
-//        if(board[x][y] != null) {
-//            return board[x][y].isLegal(x1, y1, this.getPiece(x, y).isWhite());
-//        } else {
-//            return false;
-//        }
-//    }
 
     /** Copies this board to passed board */
     public void copy(Board b){
@@ -37,7 +30,6 @@ public class Board {
 
     /** Returns true if you're in check */
     public boolean isCheck(boolean isWhite){
-        System.out.println(level);
         for(int x = 0; x < board.length; x++) {
             for (int y = 0; y < board[x].length; y++) { //For each piece
                 if(board[x][y] != null){
@@ -56,18 +48,16 @@ public class Board {
         return false;
     }
 
+    /**Returns true if the piece will be in check if it moves from the first set*/
     public boolean willBeInCheck(int x, int y, int x1, int y1){
-//        if(this.isLegal(x,y,x1,y1)){
         Board b = new Board();
         this.copy(b);
 
         b.level = this.level + 1;
         if(b.level >= 2){ return false;}
         b.getPiece(x,y).movePiece(x1,y1);
-        System.out.println(level);
         return b.isCheck(!b.getPiece(x1,y1).isWhite());
-//        }
-//        return false;
+
     }
 
     public boolean isInCheckmate(boolean isWhite){ //TODO BUg fix

@@ -15,7 +15,7 @@ public class Piece {
     private int thisPiece;
     private final boolean isWhite;
     private final Board board;
-    private boolean pieceHasMoved = false;
+    public boolean pieceHasMoved = false;
 
     public Piece(int piece, int x, int y, boolean isWhite, Board board){
         this.x = x;
@@ -122,7 +122,6 @@ public class Piece {
 
     /**Checks to see if the pawn can move to a given square (en passant not yet included)*/
     private ArrayList<Integer[]> pawnCanMove(){
-        //TODO Test
         ArrayList<Integer[]> result = new ArrayList<>();
         if(isWhite){ //If white go forward
             if (board.getPiece(x, y + 1) == null) {
@@ -278,31 +277,34 @@ public class Piece {
     }
 
     /**Moves the piece (if it can move to that square)*/
+
+
+    public void moveTo(int x1,int y1){
+        pieceHasMoved = true;
+        board.setPiece(x1, y1, this);
+        board.setPiece(x, y, null);
+        x = x1;
+        y = y1;
+    }
+
+
     public void movePiece(int x1, int y1) {
-        //TODO special moves // Check, En Passant,
+        //TODO En Passant
         if (isLegal(x1, y1, isWhite)) {
-//            if(board.willBeInCheck(x,y,x1,y1)){
-//                return;
-//            }
-//            board.capture(board.getPiece(x1, y1));
-            board.setPiece(x1, y1, this); //
-            board.setPiece(x, y, null);
 
             if (thisPiece == 5) { //Can castle if a king
                 if (x - x1 == 2) { //and moves two left
-                    board.setPiece(x - 1, y, board.getPiece(x - 3, y));
-                    board.setPiece(x - 3, y, null);
+                    board.getPiece(x-3,y).moveTo(x-1,y);
                 } else if (x - x1 == -2) { //or two right
-                    board.setPiece(x + 1, y, board.getPiece(x + 4, y));
-                    board.setPiece(x + 4, y, null);
+                    board.getPiece(x+4,y).moveTo(x+1,y);
                 }
             }
-            x = x1;
-            y = y1;
-            pieceHasMoved = true;
+
+            moveTo(x1,y1);
+
             //Pawn promotion
             if (thisPiece == 4 && (isWhite && y == 7) || (!isWhite && y == 0)) {
-                thisPiece = 2;
+                thisPiece = 2; //Sets it to a queen automatically
             }
         } else if (special(x1, y1)) {
             System.out.println(x + " " + y + "to" + x1 + y1 + "is not a legal move");
