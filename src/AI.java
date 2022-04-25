@@ -1,11 +1,15 @@
 public class AI {
-    boolean isWhite;
+    boolean isWhite; //Will either be white or not white (black). Still needs to be called from model
     Board board;
+    final int maxDepth = 2; // Higher max depth means exponentially longer runtime
+
+    /**Define the AI passing the color, and where its playing*/
     public AI(boolean isWhite, Board board){
         this.isWhite = isWhite;
         this.board = board;
     }
 
+    /**Used for storing instances of moves (instead of parallel variables / lists*/
     private class Move {
         public int score;
         public Piece p;
@@ -13,9 +17,7 @@ public class AI {
         public int y;
         public int x1;
         public int y1;
-
         public Move(){}
-
         public void setMove(int score, Piece p, int x, int y, int x1, int y1){
             this.score = score;
             this.p = p;
@@ -26,7 +28,7 @@ public class AI {
         }
     }
 
-
+    /**Finds the best move at the given depth, and the best among that, and recursion all the way up*/
     public Move findBestMove(int depth, boolean isWhite, Board board){
         Move best = new Move();
         best.score = -10000;
@@ -61,9 +63,9 @@ public class AI {
         return best;
     }
 
-
+    /**Takes a turn*/
     public void takeTurn(){
-        Move m = findBestMove(2,isWhite,board); // Higher depth means exponentially longer runtime
+        Move m = findBestMove(maxDepth,isWhite,board);
         board.getPiece(m.x,m.y).movePiece(m.x1,m.y1);
     }
 

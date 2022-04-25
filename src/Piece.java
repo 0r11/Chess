@@ -25,6 +25,7 @@ public class Piece {
         this.board = board;
     }
 
+    /**Duplicates a piece onto another board*/
     public Piece copy(Board b){
         Piece p = new Piece(thisPiece, x, y, isWhite, b);
         p.pieceHasMoved = pieceHasMoved;
@@ -247,8 +248,6 @@ public class Piece {
         return result;
     }
 
-
-
     public ArrayList<Integer[]> pieceCanMove(){
         if(thisPiece == 0){
             //Rook
@@ -278,7 +277,7 @@ public class Piece {
 
     /**Moves the piece (if it can move to that square)*/
 
-
+    /**Used for setting the piece to the square (called through movePiece)*/
     public void moveTo(int x1,int y1){
         pieceHasMoved = true;
         board.setPiece(x1, y1, this);
@@ -287,7 +286,7 @@ public class Piece {
         y = y1;
     }
 
-
+    /**Moves the piece to that square*/
     public void movePiece(int x1, int y1) {
         //TODO En Passant
         if (isLegal(x1, y1, isWhite)) {
@@ -309,7 +308,7 @@ public class Piece {
         }
     }
 
-
+    /** Returns true if the piece can move to that square*/
     public boolean isLegal(int x1, int y1, boolean isWhite){
         if(this.isWhite != isWhite){ return false;}
         for(Integer[] move: pieceCanMove()){

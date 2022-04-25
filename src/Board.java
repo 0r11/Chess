@@ -107,8 +107,8 @@ public class Board {
         board[0][0] = new Piece(0, 0, 0, true, this); //Going left to right  //Rook
         board[1][0] = new Piece(3, 1, 0, true, this); // Knight
         board[2][0] = new Piece(1, 2, 0, true, this); // Bishop
-        board[3][0] = new Piece(5, 3, 0, true, this); // King
-        board[4][0] = new Piece(2, 4, 0, true, this); // Queen
+        board[3][0] = new Piece(2, 3, 0, true, this); // Queen
+        board[4][0] = new Piece(5, 4, 0, true, this); // King
         board[5][0] = new Piece(1, 5, 0, true, this); // Bishop
         board[6][0] = new Piece(3, 6, 0, true, this); // Knight
         board[7][0] = new Piece(0, 7, 0, true, this); //Rook
@@ -120,8 +120,8 @@ public class Board {
         board[0][7] = new Piece(0, 0, 7, false, this); //Going left to right  //Rook
         board[1][7] = new Piece(3, 1, 7, false, this); // Knight
         board[2][7] = new Piece(1, 2, 7, false, this); // Bishop
-        board[3][7] = new Piece(5, 3, 7, false, this); // King
-        board[4][7] = new Piece(2, 4, 7, false, this); // Queen
+        board[3][7] = new Piece(2, 3, 7, false, this); // Queen
+        board[4][7] = new Piece(5, 4, 7, false, this); // King
         board[5][7] = new Piece(1, 5, 7, false, this); // Bishop
         board[6][7] = new Piece(3, 6, 7, false, this); // Knight
         board[7][7] = new Piece(0, 7, 7, false, this); //Rook

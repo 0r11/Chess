@@ -7,6 +7,7 @@ public class ChessModel {
         ChessModel c = new ChessModel();
         c.startMatch();
     }
+    /**The main game loop*/
     public void startMatch(){
         board = new Board();
         gui = new GUI();
@@ -34,6 +35,7 @@ public class ChessModel {
             isWhite = !isWhite;
         }
     }
+    /**Ends the game*/
     public boolean gameOver(){  //is the game over, we'll implement this later
         //TODO complete game over method
         return false;
