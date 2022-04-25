@@ -27,6 +27,7 @@ public class Piece {
 
     public Piece copy(Board b){
         Piece p = new Piece(thisPiece, x, y, isWhite, b);
+        p.pieceHasMoved = pieceHasMoved;
         return p;
     }
 
@@ -103,13 +104,15 @@ public class Piece {
         int[][] directions = {{1,2},{1 , -2},{-1,2},{-1, -2},{2,1},{2 , -1},{-2,1},{-2, -1}}; //List of directions to go in
         for(int[] offset: directions) { //Looks at all offsets
             Integer[] coords = {x + offset[0], y + offset[1]};
-            if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
-                if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
-                    Piece p = board.getPiece(coords[0], coords[1]);
-                    if (p == null) {
+            if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)) {
+                Piece p = board.getPiece(coords[0], coords[1]);
+                if (p == null) {
+                    if ((coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)) {
                         result.add(coords);
-                    } else {
-                        if (p.isWhite() != isWhite) {
+                    }
+                } else {
+                    if (p.isWhite() != isWhite) {
+                        if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
                             result.add(coords);
                         }
                     }
@@ -129,7 +132,7 @@ public class Piece {
                 if(!board.willBeInCheck(x,y,t[0],t[1])) {
                     result.add(t);
                 }
-                if (!pieceHasMoved) { //Can move double if hasn't moved
+                if (!pieceHasMoved) { //Can move double if it hasn't moved
                     if (board.getPiece(x, y + 2) == null) {
                         Integer[] t2 = {x, y + 2};
                         if(!board.willBeInCheck(x,y,t2[0],t2[1])) {
@@ -139,7 +142,7 @@ public class Piece {
                 }
             }
 
-            if(x != 0) {
+            if(x > 0) {
                 if (board.getPiece(x - 1, y + 1) != null) { //Attack opponent diagonally
                     if (!board.getPiece(x - 1, y + 1).isWhite()) {
                         Integer[] t = {x - 1, y + 1};
@@ -149,7 +152,7 @@ public class Piece {
                     }
                 }
             }
-            if(x != 7) {
+            if(x < 7) {
                 if (board.getPiece(x + 1, y + 1) != null) {
                     if (!board.getPiece(x + 1, y + 1).isWhite()) {
                         Integer[] t = {x + 1, y + 1};
@@ -174,7 +177,7 @@ public class Piece {
                     }
                 }
             }
-            if( x != 0) {
+            if( x > 0) {
                 if (board.getPiece(x - 1, y - 1) != null) {
                     if (board.getPiece(x - 1, y - 1).isWhite()) {
                         Integer[] t = {x - 1, y - 1};
@@ -184,7 +187,7 @@ public class Piece {
                     }
                 }
             }
-            if( x != 7) {
+            if( x < 7) {
                 if (board.getPiece(x + 1, y - 1) != null) {
                     if (board.getPiece(x + 1, y - 1).isWhite()) {
                         Integer[] t = {x + 1, y - 1};
@@ -272,9 +275,6 @@ public class Piece {
         return null;
     }
 
-    public boolean special(int x1, int y1) {
-        return false;
-    }
 
     /**Moves the piece (if it can move to that square)*/
 
@@ -303,11 +303,9 @@ public class Piece {
             moveTo(x1,y1);
 
             //Pawn promotion
-            if (thisPiece == 4 && (isWhite && y == 7) || (!isWhite && y == 0)) {
+            if (thisPiece == 4 && (isWhite && y1 >= 7) || (!isWhite && y1 <= 0)) { //TODO fix
                 thisPiece = 2; //Sets it to a queen automatically
             }
-        } else if (special(x1, y1)) {
-            System.out.println(x + " " + y + "to" + x1 + y1 + "is not a legal move");
         }
     }
 

@@ -17,6 +17,24 @@ public class Board {
         board[x][y] = p;
     }
 
+    public int evaluate(boolean isWhite){
+        final int[] values = {5,3,9,3,1,1000};
+        int score = 0;
+        for(Piece[] t: board){
+            for(Piece p: t){
+                if(p != null){
+                    if(p.isWhite() == isWhite){
+                        score += values[p.getPiece()];
+                    } else {
+                        score -= values[p.getPiece()];
+                    }
+                }
+            }
+        }
+        return score;
+    }
+
+
     /** Copies this board to passed board */
     public void copy(Board b){
         for(int x = 0; x < board.length; x++){
@@ -35,6 +53,7 @@ public class Board {
                 if(board[x][y] != null){
                     if(board[x][y].isWhite() == isWhite){ //That's the color
                         for(Integer[] i: board[x][y].pieceCanMove()){ //Look at each possible move
+//                            System.out.println(x + " " +y + "  " + i[0] + " " + i[1]);
                             if(board[i[0]][i[1]] != null){
                                 if(board[i[0]][i[1]].getPiece() == 5){ //If there's a king on the square
                                     return true;

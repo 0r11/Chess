@@ -5,12 +5,9 @@ public class Main {
         StdOut.println("Hello World");
 
         Board board = new Board();
-        board.initialize();
 
-        GUI s = new GUI();
-        s.drawBoard(board);
-        s.handleMouseClick(true, board);
-        s.drawBoard(board);
+//        board.setPiece(6,6,new Piece(4,6,6,true,board));
+//        System.out.println();
 
 //        board.setPiece(4,4,new Piece(1,4,4,true, board));
 //        System.out.println(board.isLegal(4,4,1,1));

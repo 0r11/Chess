@@ -13,6 +13,9 @@ public class ChessModel {
         board.initialize();
         isWhite = true;
         board.level = 0;
+        AI ai = new AI(false, board);
+
+
         while(!gameOver()){
             gui.drawBoard(board);
             if(board.isInCheckmate(true)){ //Ends the game if the
@@ -23,7 +26,11 @@ public class ChessModel {
                 System.out.println("Black wins");
                 return;
             }
-            gui.handleMouseClick(isWhite, board);
+            if(isWhite) {
+                gui.handleMouseClick(isWhite, board);
+            } else {
+                ai.takeTurn();
+            }
             isWhite = !isWhite;
         }
     }
