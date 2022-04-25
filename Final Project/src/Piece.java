@@ -9,12 +9,12 @@
 import java.util.ArrayList;
 
 public class Piece {
+    //Initialize variables
     private int x;
     private int y;
-    //private int score;
     private int thisPiece;
     private final boolean isWhite;
-    private Board board;
+    private final Board board;
     private boolean pieceHasMoved = false;
 
     public Piece(int piece, int x, int y, boolean isWhite, Board board){
@@ -86,7 +86,7 @@ public class Piece {
     public ArrayList<Integer[]> knightCanMove(){
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{1,2},{1 , -2},{-1,2},{-1, -2},{2,1},{2 , -1},{-2,1},{-2, -1}}; //List of directions to go in
-        for(int[] offset: directions) {
+        for(int[] offset: directions) { //Looks at all offsets
             Integer[] coords = {x + offset[0], y + offset[1]};
             if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
                 Piece p = board.getPiece(coords[0],coords[1]);
@@ -163,11 +163,10 @@ public class Piece {
                 }
             }
         }
-        pieceHasMoved = true;
         return result;
     }
 
-    /**Checks to see if the knight can move to a given square (Castling not yet implemented) */
+    /**Checks to see if the knight can move to a given square */
     private ArrayList<Integer[]> kingCanMove(){
         ArrayList<Integer[]> result = new ArrayList<>();
         int[][] directions = {{1,1},{1 , -1},{-1,1},{-1,-1},{0,1},{0,-1},{-1,0},{1, 0}}; //List of directions to go in
@@ -185,8 +184,19 @@ public class Piece {
             }
 
         }
-        //TODO Castling
-        pieceHasMoved = true;
+        //Castling
+        if(!pieceHasMoved) {
+            if (board.getPiece(x - 3,y) != null){ //Checks to see if there is an unmoved piece in either of the rooks starting positions
+                if(!board.getPiece(x - 3, y).hasMoved()){
+                    result.add(new Integer[]{x - 2, y});
+                }
+            }
+            if (board.getPiece(x + 4,y) != null){
+                if(!board.getPiece(x + 4, y).hasMoved()){
+                    result.add(new Integer[]{x + 2, y});
+                }
+            }
+        }
         return result;
     }
 
@@ -195,7 +205,6 @@ public class Piece {
     public ArrayList<Integer[]> pieceCanMove(){
         if(thisPiece == 0){
             //Rook
-            pieceHasMoved = true;
             return rookCanMove();
         } else if( thisPiece == 1){
             //Bishop
@@ -224,21 +233,33 @@ public class Piece {
     }
 
     /**Moves the piece (if it can move to that square)*/
-    public void movePiece(int x1, int y1){
-        //TODO special moves // Pawn promotion, Check, Castle, En Passant,
-        if(isLegal(x1,y1)){
-            board.setPiece( x1, y1,this);
-            board.setPiece( x, y,null);
+    public void movePiece(int x1, int y1) {
+        //TODO special moves // Check, En Passant,
+        if (isLegal(x1, y1, isWhite)) {
+            board.setPiece(x1, y1, this);
+            board.setPiece(x, y, null);
+
+            if (thisPiece == 5) { //Can castle if a king
+                if (x - x1 == 2) { //and moves two left
+                    board.setPiece(x - 1, y, board.getPiece(x - 3, y));
+                    board.setPiece(x - 3, y, null);
+                } else if (x - x1 == -2) { //or two right
+                    board.setPiece(x + 1, y, board.getPiece(x + 4, y));
+                    board.setPiece(x + 4, y, null);
+                }
+            }
             x = x1;
             y = y1;
+            pieceHasMoved = true;
             //Pawn promotion
-            if((isWhite && y == 7) || (!isWhite && y == 0)){ //TODO: Test
+            if (thisPiece == 4 && (isWhite && y == 7) || (!isWhite && y == 0)) { 
                 thisPiece = 2;
             }
-        } else if(special(x1,y1)){
+        } else if (special(x1, y1)) {
             System.out.println(x + " " + y + "to" + x1 + y1 + "is not a legal move");
         }
     }
+
 
     public boolean isLegal(int x1, int y1, boolean isWhite){
         if(this.isWhite != isWhite){ return false;}
