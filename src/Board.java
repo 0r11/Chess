@@ -17,6 +17,7 @@ public class Board {
         board[x][y] = p;
     }
 
+    /**Uses the value of the pieces*/
     public int evaluate(boolean isWhite){
         final int[] values = {5,3,9,3,1,1000};
         int score = 0;
@@ -33,7 +34,6 @@ public class Board {
         }
         return score;
     }
-
 
     /** Copies this board to passed board */
     public void copy(Board b){
