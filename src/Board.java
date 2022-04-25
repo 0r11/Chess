@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class Board {
 
     private Piece[][] board;
+    public int level;
     public Board(){
         board = new Piece[8][8];
     }
@@ -15,25 +16,28 @@ public class Board {
         board[x][y] = p;
     }
 
-    private boolean isLegal(int x,int y, int x1, int y1){
-        if(board[x][y] != null && board[x1][y1] != null) {
-            return board[x][y].isLegal(x1, y1, this.getPiece(x1, y1).isWhite());
-        } else {
-            return false;
-        }
-    }
+//    private boolean isLegal(int x,int y, int x1, int y1){
+//        if(board[x][y] != null) {
+//            return board[x][y].isLegal(x1, y1, this.getPiece(x, y).isWhite());
+//        } else {
+//            return false;
+//        }
+//    }
 
     /** Copies this board to passed board */
     public void copy(Board b){
         for(int x = 0; x < board.length; x++){
             for(int y = 0; y < board[x].length; y++){
-                b.setPiece(x,y,board[x][y].copy(b));
+                if(board[x][y] != null) {
+                    b.setPiece(x, y, board[x][y].copy(b));
+                }
             }
         }
     }
 
     /** Returns true if you're in check */
     public boolean isCheck(boolean isWhite){
+        System.out.println(level);
         for(int x = 0; x < board.length; x++) {
             for (int y = 0; y < board[x].length; y++) { //For each piece
                 if(board[x][y] != null){
@@ -53,21 +57,25 @@ public class Board {
     }
 
     public boolean willBeInCheck(int x, int y, int x1, int y1){
-        if(this.isLegal(x,y,x1,y1)){
-            Board b = new Board();
-            this.copy(b);
-            b.getPiece(x,y).movePiece(x1,y1);
-            return b.isCheck(!b.getPiece(x1,y1).isWhite());
-        }
-        return false;
+//        if(this.isLegal(x,y,x1,y1)){
+        Board b = new Board();
+        this.copy(b);
+
+        b.level = this.level + 1;
+        if(b.level >= 2){ return false;}
+        b.getPiece(x,y).movePiece(x1,y1);
+        System.out.println(level);
+        return b.isCheck(!b.getPiece(x1,y1).isWhite());
+//        }
+//        return false;
     }
 
-    public boolean isInCheckmate(boolean isWhite){
-        boolean checkmate = false;
+    public boolean isInCheckmate(boolean isWhite){ //TODO BUg fix
+        if(!isCheck(isWhite)){ return false;}
         for(int x = 0; x < board.length; x++) {
             for (int y = 0; y < board[x].length; y++) { //For each piece
                 if(board[x][y] != null){
-                    if(board[x][y].isWhite() == isWhite){ //That's the color
+                    if(board[x][y].isWhite() == !isWhite){ //That's the color
                         for(Integer[] i: board[x][y].pieceCanMove()){ //Look at each possible move
                             if(!willBeInCheck(x,y,i[0],i[1])){
                                 return false;
@@ -78,7 +86,6 @@ public class Board {
             }
         }
         System.out.println("Check Mate ");
-
         return true;
     }
 

@@ -49,14 +49,19 @@ public class Piece {
                 Integer[] coords = {x + offset[0] * j, y + offset[1] * j};
                 if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
                     Piece p = board.getPiece(coords[0],coords[1]);
-                    if(p == null){
-                        result.add(coords);
+                    if (p == null) {
+                        if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
+                            result.add(coords);
+                        }
                     } else { //If there is a piece it can't hop over it
                         j = 8;
-                        if(p.isWhite() != isWhite){
-                            result.add(coords); //It can capture it though
+                        if (p.isWhite() != isWhite) {
+                            if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
+                                result.add(coords); //It can capture it though
+                            }
                         }
                     }
+
                 }
             }
         }
@@ -72,15 +77,20 @@ public class Piece {
             for(int j = 1; j < 8; j ++){
                 Integer[] coords = {x + offset[0] * j, y + offset[1] * j};
                 if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
-                    Piece p = board.getPiece(coords[0],coords[1]);
-                    if(p == null){
-                        result.add(coords);
-                    } else {
-                        j = 8;
-                        if(p.isWhite() != isWhite){
+                    Piece p = board.getPiece(coords[0], coords[1]);
+                    if (p == null) {
+                        if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
                             result.add(coords);
                         }
+                    } else {
+                        j = 8;
+                        if (p.isWhite() != isWhite) {
+                            if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
+                                result.add(coords);
+                            }
+                        }
                     }
+
                 }
             }
         }
@@ -94,12 +104,14 @@ public class Piece {
         for(int[] offset: directions) { //Looks at all offsets
             Integer[] coords = {x + offset[0], y + offset[1]};
             if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
-                Piece p = board.getPiece(coords[0],coords[1]);
-                if(p == null){
-                    result.add(coords);
-                } else {
-                    if(p.isWhite() != isWhite){
+                if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
+                    Piece p = board.getPiece(coords[0], coords[1]);
+                    if (p == null) {
                         result.add(coords);
+                    } else {
+                        if (p.isWhite() != isWhite) {
+                            result.add(coords);
+                        }
                     }
                 }
             }
@@ -115,11 +127,15 @@ public class Piece {
         if(isWhite){ //If white go forward
             if (board.getPiece(x, y + 1) == null) {
                 Integer[] t = {x, y + 1};
-                result.add(t);
+                if(!board.willBeInCheck(x,y,t[0],t[1])) {
+                    result.add(t);
+                }
                 if (!pieceHasMoved) { //Can move double if hasn't moved
                     if (board.getPiece(x, y + 2) == null) {
                         Integer[] t2 = {x, y + 2};
-                        result.add(t2);
+                        if(!board.willBeInCheck(x,y,t2[0],t2[1])) {
+                            result.add(t2);
+                        }
                     }
                 }
             }
@@ -128,7 +144,9 @@ public class Piece {
                 if (board.getPiece(x - 1, y + 1) != null) { //Attack opponent diagonally
                     if (!board.getPiece(x - 1, y + 1).isWhite()) {
                         Integer[] t = {x - 1, y + 1};
-                        result.add(t);
+                        if(!board.willBeInCheck(x,y,t[0],t[1])) {
+                            result.add(t);
+                        }
                     }
                 }
             }
@@ -136,18 +154,24 @@ public class Piece {
                 if (board.getPiece(x + 1, y + 1) != null) {
                     if (!board.getPiece(x + 1, y + 1).isWhite()) {
                         Integer[] t = {x + 1, y + 1};
-                        result.add(t);
+                        if(!board.willBeInCheck(x,y,t[0],t[1])) {
+                            result.add(t);
+                        }
                     }
                 }
             }
         } else { //If black go back
             if(board.getPiece(x,y - 1) == null){
                 Integer[] t = {x, y - 1};
-                result.add(t);
+                if(!board.willBeInCheck(x,y,t[0],t[1])) {
+                    result.add(t);
+                }
                 if(!pieceHasMoved) {
                     if (board.getPiece(x, y - 2) == null) {
                         Integer[] t2 = {x, y - 2};
-                        result.add(t2);
+                        if(!board.willBeInCheck(x,y,t2[0],t2[1])) {
+                            result.add(t2);
+                        }
                     }
                 }
             }
@@ -155,7 +179,9 @@ public class Piece {
                 if (board.getPiece(x - 1, y - 1) != null) {
                     if (board.getPiece(x - 1, y - 1).isWhite()) {
                         Integer[] t = {x - 1, y - 1};
-                        result.add(t);
+                        if(!board.willBeInCheck(x,y,t[0],t[1])) {
+                            result.add(t);
+                        }
                     }
                 }
             }
@@ -163,7 +189,9 @@ public class Piece {
                 if (board.getPiece(x + 1, y - 1) != null) {
                     if (board.getPiece(x + 1, y - 1).isWhite()) {
                         Integer[] t = {x + 1, y - 1};
-                        result.add(t);
+                        if(!board.willBeInCheck(x,y,t[0],t[1])) {
+                            result.add(t);
+                        }
                     }
                 }
             }
@@ -180,28 +208,36 @@ public class Piece {
             if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
                 Piece p = board.getPiece(coords[0],coords[1]);
                 if(p == null){
-                    result.add(coords);
+                    if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
+                        result.add(coords);
+                    }
                 } else {
                     if(p.isWhite() != isWhite){
-                        result.add(coords);
+                        if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
+                            result.add(coords);
+                        }
                     }
                 }
             }
 
         }
         //Castling
-        if(!pieceHasMoved) {
+        if(!pieceHasMoved/* && !board.isCheck(isWhite)*/) {
             if (board.getPiece(x - 3,y) != null){ //Checks to see if there is an unmoved piece in either of the rooks starting positions
                 if(!board.getPiece(x - 3, y).hasMoved()){
                     if(board.getPiece(x - 1, y) == null && board.getPiece(x - 2, y) == null) { //If there's no pieces in the way
-                        result.add(new Integer[]{x - 2, y});
+                        if(!board.willBeInCheck(x,y,x-2,y)) {
+                            result.add(new Integer[]{x - 2, y});
+                        }
                     }
                 }
             }
             if (board.getPiece(x + 4,y) != null){ //Same but for Queen's side
                 if(!board.getPiece(x + 4, y).hasMoved()){
                     if(board.getPiece(x + 1, y) == null && board.getPiece(x + 2, y) == null && board.getPiece(x + 3, y) == null) {
-                        result.add(new Integer[]{x + 2, y});
+                        if(!board.willBeInCheck(x,y,x+2,y)) {
+                            result.add(new Integer[]{x + 2, y});
+                        }
                     }
                 }
             }
@@ -245,7 +281,11 @@ public class Piece {
     public void movePiece(int x1, int y1) {
         //TODO special moves // Check, En Passant,
         if (isLegal(x1, y1, isWhite)) {
-            board.setPiece(x1, y1, this);
+//            if(board.willBeInCheck(x,y,x1,y1)){
+//                return;
+//            }
+//            board.capture(board.getPiece(x1, y1));
+            board.setPiece(x1, y1, this); //
             board.setPiece(x, y, null);
 
             if (thisPiece == 5) { //Can castle if a king
@@ -272,8 +312,8 @@ public class Piece {
 
     public boolean isLegal(int x1, int y1, boolean isWhite){
         if(this.isWhite != isWhite){ return false;}
-        for(Integer[] moves: pieceCanMove()){
-            if( moves[0] == x1 && moves[1] == y1){
+        for(Integer[] move: pieceCanMove()){
+            if( move[0] == x1 && move[1] == y1){
                 return true;
             }
         }

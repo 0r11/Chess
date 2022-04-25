@@ -12,9 +12,10 @@ public class ChessModel {
         gui = new GUI();
         board.initialize();
         isWhite = true;
+        board.level = 0;
         while(!gameOver()){
             gui.drawBoard(board);
-            if(board.isCheck(true)){ //Ends the game if the
+            if(board.isInCheckmate(true)){ //Ends the game if the
                 System.out.println("White wins");
                 return;
             }
