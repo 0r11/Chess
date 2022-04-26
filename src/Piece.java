@@ -109,12 +109,16 @@ public class Piece {
                 Piece p = board.getPiece(coords[0], coords[1]);
                 if (p == null) {
                     if ((coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)) {
-                        result.add(coords);
+                        if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
+                            result.add(coords);
+                        }
                     }
                 } else {
                     if (p.isWhite() != isWhite) {
                         if( (coords[0] < 8 && coords[0] > -1) && (coords[1] < 8 && coords[1] > -1)){
-                            result.add(coords);
+                            if(!board.willBeInCheck(x,y,coords[0],coords[1])) {
+                                result.add(coords);
+                            }
                         }
                     }
                 }
@@ -246,7 +250,7 @@ public class Piece {
             }
         }
         return result;
-    }
+    } //TODO Fix castling
 
     public ArrayList<Integer[]> pieceCanMove(){
         if(thisPiece == 0){
@@ -302,8 +306,10 @@ public class Piece {
             moveTo(x1,y1);
 
             //Pawn promotion
-            if (thisPiece == 4 && (isWhite && y1 >= 7) || (!isWhite && y1 <= 0)) { //TODO fix
-                thisPiece = 2; //Sets it to a queen automatically
+            if ((isWhite && y1 >= 7) || (!isWhite && y1 <= 0) ){
+                if(thisPiece == 4) {
+                    thisPiece = 2; //Sets it to a queen automatically
+                }
             }
         }
     }
