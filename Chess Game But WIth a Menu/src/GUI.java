@@ -181,21 +181,22 @@ public class GUI {
 
                     int a1 = (int) x1;
                     int b1 = (int) y1;
-
+//                    if(board.getPiece(a,b) == null){System.out.println(a + b);continue;}
                     //If move is legal it places piece, if else it runs the method again and allows the user to make another move
                     if (board.getPiece(a, b).isLegal(a1, b1, isWhite)) {
                         if (board.getPiece(a1, b1) != null) { //captured Black Piece
                             captured(board.getPiece(a1, b1));
                             board.getPiece(a, b).movePiece(a1, b1);
-                            drawBoard(board);
-                            return;
 
                         } else {
                             board.getPiece(a, b).movePiece(a1, b1);
-                            drawBoard(board);
-                            continue;
                         }
+
+                        drawBoard(board);
+                        StdAudio.play("ChessAudio.wav");
+                        return;
                     }
+                    drawBoard(board);
                 }
             }
         }
