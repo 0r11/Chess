@@ -63,8 +63,9 @@ public class AI {
 
 
     public void takeTurn(){
-        Move m = findBestMove(0,isWhite,board); // Higher depth means exponentially longer runtime
+        Move m = findBestMove(2,isWhite,board); // Higher depth means exponentially longer runtime
         board.getPiece(m.x,m.y).movePiece(m.x1,m.y1);
+        StdAudio.play("ChessAudio.wav");
     }
 
 }
